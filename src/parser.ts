@@ -8,10 +8,13 @@ import {
 import { Attachment, Message, RawMessage, ParseStringOptions } from './types';
 import { sortByLengthAsc } from './utils';
 
-const regexParser = /^(?:\u200E|\u200F)*\[?(\d{1,4}[-/.] ?\d{1,4}[-/.] ?\d{1,4})[,.]? \D*?(\d{1,2}[.:]\d{1,2}(?:[.:]\d{1,2})?)(?: ([ap]\.? ?m\.?))?\]?(?: -|:)? (.+?): ([^]*)/i;
-const regexParserSystem = /^(?:\u200E|\u200F)*\[?(\d{1,4}[-/.] ?\d{1,4}[-/.] ?\d{1,4})[,.]? \D*?(\d{1,2}[.:]\d{1,2}(?:[.:]\d{1,2})?)(?: ([ap]\.? ?m\.?))?\]?(?: -|:)? ([^]+)/i;
+const regexParser =
+  /^(?:\u200E|\u200F)*\[?(\d{1,4}[-/.] ?\d{1,4}[-/.] ?\d{1,4})[,.]? \D*?(\d{1,2}[.:]\d{1,2}(?:[.:]\d{1,2})?)(?: ([ap]\.? ?m\.?))?\]?(?: -|:)? (.+?): ([^]*)/i;
+const regexParserSystem =
+  /^(?:\u200E|\u200F)*\[?(\d{1,4}[-/.] ?\d{1,4}[-/.] ?\d{1,4})[,.]? \D*?(\d{1,2}[.:]\d{1,2}(?:[.:]\d{1,2})?)(?: ([ap]\.? ?m\.?))?\]?(?: -|:)? ([^]+)/i;
 const regexSplitDate = /[-/.] ?/;
-const regexAttachment = /<.+:\s{0,1}\u200E{0,1}(.+)>|\u200E{0,1}(.+)\s\(.+\)/;
+const regexAttachment =
+  /<.+:\s{0,1}\u200E{0,1}(.+)>|\u200E{0,1}([\w,\s-]+\.[\w\d]{3})\s\(.+\)/;
 
 /**
  * Takes an array of lines and detects the lines that are part of a previous
