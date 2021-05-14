@@ -203,6 +203,19 @@ describe('parser.js', () => {
             msg: '3/6/18, 1:55 p.m. - a: m',
           },
         ];
+
+        const messages2 = [
+          {
+            system: false,
+            msg:
+              '02.02.16, 17:39 - a: ‎IMG-20160202-WA0001.jpg (Datei angehängt) ',
+          },
+          {
+            system: false,
+            msg: '02.02.16, 17:39 - a: m',
+          },
+        ];
+
         const parsedWithoutAttachments = parseMessages(messages, {
           parseAttachments: false,
         });
@@ -222,6 +235,15 @@ describe('parser.js', () => {
 
         it('should not add attachment property to normal messages', () => {
           expect(parsedWithAttachments[1].attachment).toBeUndefined();
+        });
+
+        it('should correctly parse the attachment string', () => {
+          const parsedWithAttachments2 = parseMessages(messages2, {
+            parseAttachments: true,
+          });
+          expect(parsedWithAttachments2[0]?.attachment?.fileName).toBe(
+            'IMG-20160202-WA0001.jpg',
+          );
         });
       });
     });
