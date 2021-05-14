@@ -195,14 +195,22 @@ describe('parser.js', () => {
         const messages = [
           {
             system: false,
-            msg:
-              '3/6/18, 1:55 p.m. - a: < attached: 00000042-PHOTO-2020-06-07-15-13-20.jpg >',
+            msg: '3/6/18, 1:55 p.m. - a: < attached: 00000042-PHOTO-2020-06-07-15-13-20.jpg >',
           },
           {
             system: false,
             msg: '3/6/18, 1:55 p.m. - a: m',
           },
+          {
+            system: false,
+            msg: '02.02.16, 17:39 - a: ‎IMG-20160202-WA0001.jpg (Datei angehängt) ',
+          },
+          {
+            system: false,
+            msg: '02.02.16, 17:39 - a: Ein paar Sachen hier und hier (auch was da). Sonst nichts.',
+          },
         ];
+
         const parsedWithoutAttachments = parseMessages(messages, {
           parseAttachments: false,
         });
@@ -222,6 +230,15 @@ describe('parser.js', () => {
 
         it('should not add attachment property to normal messages', () => {
           expect(parsedWithAttachments[1].attachment).toBeUndefined();
+        });
+
+        it('should correctly parse the attachment string also if it is stored without <attachment: ...>', () => {
+          expect(parsedWithAttachments[2]?.attachment?.fileName).toBe(
+            'IMG-20160202-WA0001.jpg',
+          );
+        });
+        it('should not add attachment property to normal messages also if it trying ti macht without <attachment: ...>', () => {
+          expect(parsedWithAttachments[3]?.attachment).toBeUndefined();
         });
       });
     });

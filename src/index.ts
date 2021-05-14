@@ -1,6 +1,8 @@
 import { makeArrayOfMessages, parseMessages } from './parser';
 import { Message, ParseStringOptions } from './types';
 
+export { Message };
+
 /**
  * Parses a string containing a WhatsApp chat log.
  *
