@@ -11,7 +11,7 @@ import { sortByLengthAsc } from './utils';
 const regexParser = /^(?:\u200E|\u200F)*\[?(\d{1,4}[-/.] ?\d{1,4}[-/.] ?\d{1,4})[,.]? \D*?(\d{1,2}[.:]\d{1,2}(?:[.:]\d{1,2})?)(?: ([ap]\.? ?m\.?))?\]?(?: -|:)? (.+?): ([^]*)/i;
 const regexParserSystem = /^(?:\u200E|\u200F)*\[?(\d{1,4}[-/.] ?\d{1,4}[-/.] ?\d{1,4})[,.]? \D*?(\d{1,2}[.:]\d{1,2}(?:[.:]\d{1,2})?)(?: ([ap]\.? ?m\.?))?\]?(?: -|:)? ([^]+)/i;
 const regexSplitDate = /[-/.] ?/;
-const regexAttachment = /<.+:(.+)>/;
+const regexAttachment = /<.+:\s{0,1}\u200E{0,1}(.+)>|\u200E{0,1}(.+)\s\(.+\)/;
 
 /**
  * Takes an array of lines and detects the lines that are part of a previous
@@ -58,7 +58,13 @@ function makeArrayOfMessages(lines: string[]): RawMessage[] {
 function parseMessageAttachment(message: string): Attachment | null {
   const attachmentMatch = message.match(regexAttachment);
 
-  if (attachmentMatch) return { fileName: attachmentMatch[1].trim() };
+  if (attachmentMatch)
+    return {
+      fileName:
+        attachmentMatch.length === 3 && attachmentMatch[2]
+          ? attachmentMatch[2].trim()
+          : attachmentMatch[1].trim(),
+    };
   return null;
 }
 
